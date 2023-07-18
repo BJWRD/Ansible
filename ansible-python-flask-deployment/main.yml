@@ -1,0 +1,12 @@
+---
+- name: ansible-python-flask-deployment Playbook
+  hosts: all
+  become: True
+  become_user: root
+
+  vars_files:
+    - group_vars/all/vars.yml
+
+  roles:
+    - docker
+    - verification_tests

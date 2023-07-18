@@ -1,0 +1,29 @@
+---
+# Docker Yum Repo
+docker_repo:
+- 'https://download.docker.com/linux/centos/docker-ce.repo'
+
+# Software packages
+packages:
+- yum-utils
+- python3 
+- docker
+
+# Docker Compose options.
+docker_install_compose: true
+docker_compose_version: "v2.17.3"
+docker_compose_arch: "{{ ansible_architecture }}"
+docker_compose_url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-linux-{{ docker_compose_arch }}"
+docker_compose_path: /usr/local/bin/docker-compose
+
+# Docker group name.
+docker_group: docker
+
+# Users added to the Docker group.
+docker_user: docker
+
+# Docker Container Check
+docker_status: docker ps -a
+
+# Python Flask Application Verification Check
+verification: http_result.content

@@ -1,0 +1,97 @@
+# Docker Installation and Configuration Tasks
+---
+- name: Update package cache
+  become: true
+  yum:
+    update_cache: yes
+
+- name: "{{ packages }}"
+  yum:
+    name: "{{ packages }}" 
+    state: present
+
+- name: docker Add
+  become: true
+  command: yum-config-manager --add-repo "{{ docker_repo }}"
+
+- name: Download Docker-Compose
+  become: true
+  get_url:
+    url: "{{ docker_compose_url }}"
+    dest: "{{ docker_compose_path }}"
+    mode: 0555
+    group: docker
+    validate_certs: no
+
+- name: Link Docker-Compose in path
+  file:
+    state: link
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+
+- name: Create docker.service.d directory
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Start the Docker daemon
+  become: true
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+
+- name: Add Docker user
+  user:
+    name: "{{ docker_user }}"
+    append: yes
+    state: present
+    createhome: yes
+    shell: /bin/bash
+
+- name: Add Docker user to Docker group
+  user:
+    name: "{{ docker_user }}"
+    groups: "{{ docker_group }}"
+    append: yes
+
+- name: Allow the Docker user to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'docker ALL=(ALL) NOPASSWD: ALL' 
+    validate: 'visudo -cf %s'
+
+- name: Create the Docker directory
+  file:
+    path: /home/docker
+    state: directory
+    owner: docker
+    group: docker
+
+- name: Copy across files
+  copy:
+    src: "files/{{ item }}"
+    dest: "/home/docker/{{ item }}"
+  with_items:
+    - app.py
+    - docker-compose.yml
+    - Dockerfile
+
+- name: restart docker daemon
+  service:
+    name: docker
+    state: restarted
+
+- name: Run docker-compose
+  command: docker-compose up -d
+  args:
+    chdir: /home/docker
+
+- name: Ensure docker container is running
+  command: "{{ docker_status }}"
+  register: docker_status_output
+
+- name: Print the docker status
+  debug:
+    var: docker_status_output.stdout_lines
+

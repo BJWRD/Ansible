@@ -1,0 +1,12 @@
+# Python Flask Application Verification Check
+---
+- name: Send HTTP request and display response
+  uri:
+    url: http://localhost:8080
+    method: GET
+    return_content: yes
+  register: http_result
+
+- name: Display HTTP response
+  debug:
+    var: http_result.content

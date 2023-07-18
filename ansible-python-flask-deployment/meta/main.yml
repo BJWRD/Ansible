@@ -1,0 +1,23 @@
+---
+# Metadata for the custom roles
+dependencies: 
+  - role: apt_repositories
+  - role: docker
+  - role: verification_tests
+
+# General metadata for the project
+project_info:
+  author: BJWRD
+  description: Python Flask Application which is run on an AWS EC2 instance within a Docker Container - provisioned using Ansible.
+  license: MIT
+  current_ansible_version: 2.13.8
+  current_python_version: 3.8.10
+  platforms:
+    - name: Amazon Linux
+      ami_version:
+        - ami-0d76271a8a1525c1a
+  repository: https://github.com/bjwrd/ansible-python-flask-deployment
+  tags:
+    - devops
+    - infrastructure
+  version: 1.0.0
