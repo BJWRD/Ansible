@@ -1,0 +1,17 @@
+---
+# Purpose: Creating a Custom Ansible Fact
+# Modules Used: file & copy
+
+- name: custom_ansible_fact
+  host: ansible1
+  tasks:
+     - name: create the directory
+       file:
+          name: /etc/ansible/facts.d
+          state: directory
+     - name: create the fact file
+       copy:
+          content: |
+               [facts]
+               type=production
+          dest: /etc/ansible/facts.d/local.fact

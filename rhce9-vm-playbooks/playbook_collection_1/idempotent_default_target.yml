@@ -1,0 +1,15 @@
+---
+# Purpose: Idempotently sets multi-user.target on target hosts
+# Modules Used: command
+
+- name: idempotent_default_target
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: get current target
+      command: systemctl get-default
+      changed_when: false # In there for idempotency
+      register: default
+    - name: set default target
+      command: systemctl set-default multi-user.target
+      when: "'multi.user' not in default['stdout']"

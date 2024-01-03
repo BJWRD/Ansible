@@ -1,0 +1,11 @@
+---
+# Purpose: Sets hostname inline with the hostname included within the inventory file
+# Modules Used: command
+
+- name: set_hostname
+  host: all
+  tasks: 
+    - name: set the hostname
+      command: hostnamectl set-hostname {{ inventory_hostname }}
+    - name: restart host
+      command: reboot

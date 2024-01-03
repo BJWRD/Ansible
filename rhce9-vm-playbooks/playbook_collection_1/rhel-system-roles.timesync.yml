@@ -1,0 +1,13 @@
+---
+# Purpose: RHEL System Role configures time synchronisation against the pool.ntp.org time servers (to be used alongside the rhel-system-roles.timesync role)
+# Modules Used: N/A
+
+- name: rhel-system-roles.timesync
+  hosts: all
+  vars:
+    timesync_ntp_servers:
+      - hostname: pool.ntp.org
+        pool: true
+        iburst: true
+  roles:
+    - rhel-system-roles.timesync

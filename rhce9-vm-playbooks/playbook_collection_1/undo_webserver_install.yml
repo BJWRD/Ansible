@@ -1,0 +1,15 @@
+---
+# Purpose: Removes /var/www/html/.html file and uninstalls httpd
+# Modules Used: file & dnf
+
+- name: undo_webserver_install playbook
+  hosts: ansible2
+  tasks:
+    - name: file index.html is removed
+      file:
+        name: /var/www/html/index.html
+        state: absent
+    - name:
+      dnf:
+        name: httpd
+        state: absent

@@ -1,0 +1,33 @@
+---
+# Purpose: Starts a webserver with the necessary firewall rules to display welcome text
+# Modules Used: dnf, copy, service, firewalld
+
+- name: webserver_install
+  hosts: ansible2
+  tasks:
+    - name: use dnf to install httpd and firewalld
+      dnf: 
+        name:
+        - httpd
+        - firewalld
+        state: latest
+    - name: use copy to generate index.html 
+      copy:
+        dest: /var/www/html/index.html
+        content: hello world! 
+    - name: use service to activate httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes  
+    - name: user service to activate firewalld
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: open ports in the firewall
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true

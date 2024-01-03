@@ -1,0 +1,61 @@
+---
+# Purpose: Sets up yum_repository and installs nmap package via the newly created repository on all targeted hosts
+# Modules Used: dnf, service, firewalld, file, yum, command, package_facts, debug, yum_repository
+
+- name: yum_repository_configuration
+  hosts: all
+  vars:
+    my_package: nmap
+  tasks:
+  - name: install FTP server & createrepo
+    dnf:
+      name: 
+      - vsftpd
+      - createrepo_c
+      state: latest
+  - name: start FTP server
+    service:
+      name: vsftpd
+      state: started
+      enabled: yes
+  - name: open firewall for FTP
+    firewalld:
+      service: ftp
+      state: enabled
+      permanent: yes
+  - name: make directory
+    file:
+      path: /var/ftp/repo
+      state: directory
+  - name: download packages
+    yum:
+      name: nmap
+      download_only: yes
+      dowload_dir: /var/ftp/repo
+  - name: createrepo
+    command: createrepo /var/ftp/repo
+  - name: get package facts
+    package_facts:
+      manager: auto
+  - name: show package facts for my_package
+    debug:
+      var: ansible_facts.packages[my_package]
+    when: my_package in ansible_facts.packages
+  - name: connect to example repo
+    yum_repository:
+      name: Repository
+      description: New_Repo
+      file: file
+      baseurl: ftp://control.example.com/repo/
+      gpgcheck: yes
+  - name: install package
+    yum:
+      name: "{{ my_package }}"
+      state: present
+  - name: update package facts
+    package_facts:
+      manager: auto
+  - name: show package facts for my_package
+    debug:
+      var: ansible_facts.packages[my_package]
+    when: my_package in ansible_facts.packages

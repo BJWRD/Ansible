@@ -1,0 +1,13 @@
+---
+# Purpose: Asserts whether a particular interface exists on the targeted host
+# Modules Used: assert
+
+- name: assert
+  hosts: ansible2
+  tasks:
+    - name: test assert
+      assert:
+        that:
+          - ansible_ens34 is defined
+        fail_msg: bad luck 
+        success_msg: it exists

@@ -1,0 +1,15 @@
+---
+# Purpose: Checks to see whether a particular disk exists using conditionals
+# Modules Used: debug
+
+- name: conditional_check_ansible_device
+  host: ansible1
+  tasks: 
+  - name: print message
+    debug:
+        msg: you have a second disk
+    when: ansible_facts['devices']['sdb'] is defined
+  - name: no disk defined
+    debug:
+      msg: you have no second disk
+    when: ansible_facts['devices']['sdb'] is not defined
