@@ -1,0 +1,39 @@
+---
+# Purpose: Block and Rescue Logical Volume creation
+# Modules Used: fail, parted, lvg, lvol, debug, filesystem
+
+- name: block_and_rescue
+  hosts: ansible1
+  tasks:
+    - name: 
+      fail:
+        msg: Second hard disk does not exist
+      when: ansible_facts[‘devices’][‘sdb’] is not defined
+    - name:
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+    - name:
+      lvg:
+        pvs: /dev/sdb
+        vg: vgdata
+    - name: 
+      block:
+        - name:
+          lvol:
+            vg: vgdata
+            lv: lvdata
+            size: 30g
+      rescue:        
+        - debug: 
+            msg: insufficient disk space for large lv
+        - name:
+          lvol:
+            vg: vgdata
+            lv: lvdata
+            size: 1g
+    - name:
+      filesystem:
+          fstype: xfs
+          dev: /dev/vgdata/lvdata

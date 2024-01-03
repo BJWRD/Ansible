@@ -1,0 +1,14 @@
+---
+# Purpose: Configuring a repository client (to be used alongside repository_server_setup.yml playbook)
+# Modules Used: yum_repository
+
+- name: yum_repository_client
+  hosts: ansible1
+  tasks:
+    - name: setting up custom repo
+      yum_repository:
+        name: installdisk
+        description: local control repos 
+        file: install disk
+        baseurl: http://control.example.com/reposerver
+        ggpcheck: no

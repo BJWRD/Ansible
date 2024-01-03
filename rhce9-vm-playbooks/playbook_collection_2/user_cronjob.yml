@@ -1,0 +1,16 @@
+---
+# Purpose: Creating a user cron job
+# Modules Used: user & cron
+
+- name: cronjob
+  hosts: ansible1
+  tasks:
+    - name:
+      user:
+        name: test
+    - name:
+      cron:
+        name: user_test
+        user: test
+        minute: "*/2"
+        job: touch /tmp/testfile

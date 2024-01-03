@@ -1,0 +1,8 @@
+---
+# Purpose: Generates an /etc/motd file which should display 'Welcome on hostname. This file was generated on dd/mm/yyyy' (ensure the motd role is used alongside this playbook)
+# Modules Used: N/A
+
+- name: motd
+  hosts: all 
+  roles:
+    - motd

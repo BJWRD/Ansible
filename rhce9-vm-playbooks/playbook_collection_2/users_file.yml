@@ -1,0 +1,15 @@
+# The creating_users_per_group.yml file must be used alongside this file for a successful playbook execution
+users:
+  - username: anna
+    pwd: secretpass
+    grp: profs
+  - username: anouk
+    pwd: password
+    grp: students
+  - username: lisa
+    pwd: verysecretpass
+    grp: profs
+  - username: linda
+    pwd: notsosecretpass
+    grp: students
+

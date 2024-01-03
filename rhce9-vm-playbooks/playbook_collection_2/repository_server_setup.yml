@@ -1,0 +1,45 @@
+---
+# Purpose: Configures a Control Node to host contents and act as a repository
+# Modules Used: dnf, service, firewalld, file, debug, sefcontext, command
+
+- name: repository_server_setup
+  hosts: ansible1
+  tasks:
+    - name: Install Apache Server
+      dnf: httpd
+      state: latest
+    - name: Start Apache Server
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Start firewalld
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: Open Firewalld for Apache Server
+      firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled
+    - name: create /reposerver
+      file:
+        state: directory
+        path: /reposerver
+    - name:
+      file:
+        src: /reposerver
+        dest: /var/www/html/reposerver
+        state: link
+    - name:
+      debug:
+        msg: You need to manually copy content from the installation iso to /reposerver/
+    - name:
+      sefcontext:
+        target: '/reposerver(/.*)?'
+        setype: httpd_sys_content_t
+        state: present
+    - name: run restorecon
+      command: restorecon -Rv /reposerver

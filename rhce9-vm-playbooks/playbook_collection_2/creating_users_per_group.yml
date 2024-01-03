@@ -1,0 +1,54 @@
+---
+# Purpose: Creates users which are members of particular groups on dedicated nodes - (users_files.yml must be used alongside this playbook for it to execute successfully)
+# Modules Used: lineinfile, debug, group, user, shell
+- name: creating_users_per_group
+  hosts: all
+  tasks:
+    - name:
+      lineinfile:
+        path: /etc/login.defs
+        regexp: '^ENCRYPT_METHOD'
+        line: ENCRYPT_METHOD SHA512
+
+- name: prof_users
+  hosts: ansible1
+  vars_files:
+    - users_file.yml
+  tasks:
+    - debug:
+        msg: "{{ item.username }} has password {{ item.pwd }} and is a member of {{ item.grp }}"
+      when: item.grp == "profs"
+      loop: "{{ users }}"
+    - group:
+        name: profs
+    - user:
+        name: "{{ item.username }}"
+        group: "{{ item.grp }}"
+      when: item.grp == "profs"
+      loop: "{{ users }}"
+
+- name: student_users
+  hosts: ansible2
+  vars_files:
+  - users_file.yml
+  tasks:
+    - debug:
+        msg: "{{ item.username }} has password {{ item.pwd }} and is a member of {{ item.grp }}"
+      when: item.grp == "students"
+      loop: "{{ users }}"
+    - group:
+        name: students
+    - user:
+        name: "{{ item.username }}"
+        group: "{{ item.grp }}"
+      when: item.grp == "students"
+      loop: "{{ users }}"
+
+- name: password
+  hosts: all
+  vars_files:
+  - users_file.yml
+  tasks:
+    - name:
+      shell: echo {{ item.pwd }} | passwd --stdin {{ item.username }}
+      loop: "{{ users }}"

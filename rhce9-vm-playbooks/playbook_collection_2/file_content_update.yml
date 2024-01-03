@@ -1,0 +1,38 @@
+---
+# Purpose: Altering the report.txt file to include the host specs detailed below (using Ansible Facts) - The report.txt file must be used alongside this playbook for a successful playbook execution
+# Modules Used: copy & lineinfile
+
+- name: file_content_update
+  hosts: ansible1
+  tasks:
+    - name: 
+      copy:
+        src: report.txt
+        dest: /tmp/{{ ansible_hostname }}-report.txt
+    - name:
+      lineinfile:
+        path: /tmp/{{ ansible_hostname }}-report.txt
+        regexp: '^HOSTNAME'
+        line: HOSTNAME={{ ansible_hostname }}
+    - name:
+      lineinfile:
+        path: /tmp/{{ ansible_hostname }}-report.txt
+        regexp: '^MEMORY'
+        line: MEMORY={{ ansible_memtotal_mb }}
+    - name:
+      lineinfile:
+        path: /tmp/{{ ansible_hostname }}-report.txt
+        regexp: '^PRIMARY_DISK_SIZE'
+        line: PRIMARY_DISK_SIZE={{ ansible_devices.sda.size }}
+    - name:
+      lineinfile:
+        path: /tmp/{{ ansible_hostname }}-report.txt
+        regexp: '^SECOND_DISK'
+        line: SECOND_DISK=present
+        when: ansible_facts['devices']['sdb'] is defined
+    - name:
+      lineinfile:
+        path: /tmp/{{ ansible_hostname }}-report.txt
+        regexp: '^SECOND_DISK'
+        line: SECOND_DISK=absent
+        when: ansible_facts['devices']['sdb'] is not defined
