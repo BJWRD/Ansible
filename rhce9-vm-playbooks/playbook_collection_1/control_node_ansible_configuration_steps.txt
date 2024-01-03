@@ -1,0 +1,31 @@
+#1) sudo dnf install ansible-core -y
+
+#2) sudo vi /etc/sudoers.d/ansible
+    ansible ALL=(ALL) NOPASSWD: ALL
+
+#3) vi inventory
+    ansible1
+    ansible2
+
+#4) vi ansible.cfg
+    [defaults]
+    inventory=inventory
+    remote_user=ansible
+    ask_pass=false
+    host_key_checking=false
+    [privilege_escalation]
+    become = true
+    become_method = sudo
+    become_user = root
+    become_ask_pass = false
+
+#5) ansible -i inventory all -u student -k -b -K -m user -a “name=ansible”
+#6) ansible all -u student -k -b -K -m shell -a “echo password123 | passwd –stdin ansible”
+#7) ansible all -u student -k -b -K -m shell -a ‘echo “ansible ALL=(ALL) NOPASSWD: ALL” > /etc/sudoers.d/ansible’
+#8) ssh-keygen
+#9) ssh-copy-id ansible1
+#10) ssh-copy-id ansible2
+
+#SSH Verfification steps -
+#11) ssh ansible1
+#12) ssh ansible2 
