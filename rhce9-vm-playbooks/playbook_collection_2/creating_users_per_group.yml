@@ -1,5 +1,5 @@
 ---
-# Purpose: Creates users which are members of particular groups on dedicated nodes - (users_files.yml must be used alongside this playbook for it to execute successfully)
+# Purpose: Creates users which are members of particular groups on dedicated nodes - (The users_files.yml file must be used alongside this playbook for it to execute successfully)
 # Modules Used: lineinfile, debug, group, user, shell
 - name: creating_users_per_group
   hosts: all

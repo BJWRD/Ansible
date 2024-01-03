@@ -1,0 +1,57 @@
+---
+# Purpose: User and Group creation - dependent on host groups (managed in the inventory file) and the uid which is assigned per the vars_list.yml file. secret.yml to be used as Ansible-Vault inclusion. SSH is also configured per user.
+# Modules Used: group, user, authorized_key
+# Pre-Requisite Steps can be found at - user_group_conditionals_ansible_vault_steps.txt
+
+- name: user_group_conditionals
+  hosts: all
+  vars_files:
+    - user_list.yml
+    - secret.yml
+  tasks:
+    - name: create group wheel
+      group:
+        name: wheel
+        state: present
+    - name: create user webservers
+      user:
+        name: "{{item.username}}"
+        uid: "{{item.uid}}"
+        groups: wheel
+        append: yes
+        shell: /bin/bash
+        password: "{{ user_password | password_hash('sha512') }}"
+      when:
+        - inventory_hostname in groups['webservers']
+        - item.uid|string|first == '1'
+      loop: "{{users}}"
+    - name: create user database
+      user:
+        name: "{{item.username}}"
+        uid: "{{item.uid}}"
+        groups: wheel
+        append: yes
+        shell: /bin/bash
+        password: "{{ user_password | password_hash('sha512') }}"
+      when:
+        - inventory_hostname in groups.['database']
+        - item.uid|string|first == '2'
+      loop: "{{users}}"
+    - name: authorized key in webservers
+      authorized_key:
+        user: "{{item.username}}"
+        state: present
+        key: "{{ lookup('file', '/home/automation/.ssh/id_rsa.pub') }}"
+      when:
+        - inventory_hostname in groups['webservers']
+        - item.uid|string|first == '1'
+      loop: "{{users}}"
+    - name: authorized key in database
+      authorized_key:
+        user: "{{item.username}}"
+        state: present
+        key: "{{ lookup('file', '/home/automation/.ssh/id_rsa.pub') }}"
+      when:
+        - inventory_hostname in groups['database']
+        - item.uid|string|first == '2'
+      loop: "{{users}}"

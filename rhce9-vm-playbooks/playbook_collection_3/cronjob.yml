@@ -1,0 +1,12 @@
+---
+# Purpose: Creating a cron job
+# Modules Used: cron
+
+- name: cronjob
+  hosts: proxy
+  tasks:
+    - name:
+      cron:
+         name: task
+         minute: "*/1"
+         job: date > /tmp/time.log

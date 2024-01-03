@@ -1,0 +1,6 @@
+# The Following Steps require execution on a localhost for the user_group_conditionals.yml playbook to execute successfully
+
+#1) ansible-vault create secret.yml
+    *Enter Password*
+    user_password: devops
+    database_password: devops

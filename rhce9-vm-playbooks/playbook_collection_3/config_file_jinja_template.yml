@@ -1,0 +1,14 @@
+---
+# Purpose: Template creates and customises configuration file (server_list.j2 to be included)
+# Modules Used: template
+
+- name:
+  hosts: database
+  tasks:
+    - name: config_file_jinja_template
+      template:
+        src: server_list.j2
+        dest: /etc/server_list.txt
+        owner: ansible
+        mode: '0600'
+        setype: net_conf_t

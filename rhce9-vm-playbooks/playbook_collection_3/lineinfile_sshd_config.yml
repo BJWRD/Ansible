@@ -1,0 +1,22 @@
+---
+# Purpose: Configuring the sshd config
+# Modules Used: lineinfile
+
+- name: lineinfile_sshd_config
+  hosts: all
+  tasks:
+    - name:
+      lineinfile:
+         path: /etc/ssh/sshd_config
+         regexp: '^banner'
+         line: banner=/etc/motd
+    - name:
+      lineinfile:
+         path: /etc/ssh/sshd_config
+         regexp: '^X11Forwarding'
+         line: X11Forwarding=disabled
+    - name:
+      lineinfile:
+         path: /etc/ssh/sshd_config
+         regexp: '^MaxAuthTries'
+         line: MaxAuthTries=3

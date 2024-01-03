@@ -1,0 +1,17 @@
+---
+# Purpose: Creating a Custom Ansible Fact
+# Modules Used: file & copy
+
+- name: custom_ansible_fact
+  hosts: database
+  tasks:
+    - name:
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+    - name: Copy the content to the file
+      copy:
+        content: |
+            [sample_test]
+            server_role=mysql
+        dest: /etc/ansible/facts.d/custom.fact

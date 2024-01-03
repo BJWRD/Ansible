@@ -1,0 +1,15 @@
+---
+# Purpose: Archiving a file
+# Modules Used: copy & archive
+
+- name: archive
+  hosts: database
+  tasks:
+    - name:
+      copy:
+        content: dev,test,qa,prod
+        dest: /tmp/database_list.txt
+    - name: 
+      archive:
+         path: /tmp/database_list.txt
+         dest: /tmp/archive.gz

@@ -1,4 +1,4 @@
-# The creating_users_per_group.yml file must be used alongside this file for a successful playbook execution
+# The creating_users_per_group.yml playbook must be used alongside this file for a successful playbook execution
 users:
   - username: anna
     pwd: secretpass

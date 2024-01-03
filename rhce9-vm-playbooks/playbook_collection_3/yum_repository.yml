@@ -1,0 +1,16 @@
+---
+# Purpose: Configuring a repository client
+# Modules Used: yum_repository
+
+- name: yum_repository
+  hosts: database
+  tasks:
+    - name:
+      yum_repository:
+         name: mysql-community
+         description: MYSQL 8.0
+         file: task
+         baseurl: http://repo.mysql.com/yum/mysql-8.0-community/el/8/x86_64/
+         enabled: yes 
+         gpgcheck: yes 
+         gpgkey: http://repo.mysql.com/RPM-GPG-KEY-mysql

@@ -1,0 +1,22 @@
+---
+# Purpose: Applying updates to /etc/motd per host included within the inventory file
+# Modules Used: copy
+
+- name: etc_motd_mutliple_hosts
+  hosts: all
+  tasks:
+    - name:
+      copy:
+         content: Welcome to HAProxy Server!
+         dest: /etc/motd
+      when: inventory_hostname in groups['proxy']
+    - name:
+      copy:
+         content: Welcome to Apache Server!
+         dest: /etc/motd
+      when: inventory_hostname in groups['webservers']
+    - name:
+      copy:
+         content: Welcome to MYSQL Server!
+         dest: /etc/motd
+      when: inventory_hostname in groups['database']

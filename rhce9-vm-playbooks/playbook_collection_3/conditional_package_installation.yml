@@ -1,0 +1,21 @@
+---
+# Purpose: Package installation - dependent on hosts within particular inventory groups
+# Modules Used: dnf
+
+- name: conditional_package_installation
+  hosts: all
+  tasks:
+    - name: 
+      dnf:
+        name:
+          - tcpdump
+          - mailx
+        state: latest
+      when: inventory_hostname in groups['proxy']
+    - name: 
+      dnf:
+        name:
+          - lsof
+          - mailx
+        state: latest
+      when: inventory_hostname in groups['database']
