@@ -4,14 +4,13 @@
     ansible ALL=(ALL) NOPASSWD: ALL
 
 #3) vi inventory
-    [dev]
+    [proxy]
     ansible1
-    [prod]
+    [webservers]
     ansible2
-    [servers:children]
-    dev
-    prod
-
+    ansible3
+    [database]
+    ansible4
 
 #4) vi ansible.cfg
     [defaults]
