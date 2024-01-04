@@ -1,0 +1,22 @@
+---
+# Purpose: Configures two yum_repositories locally - epel & elasticsearch
+# Modules Used: yum_repository
+
+- name: yum_repository
+  hosts: all
+  tasks:
+    - name:
+      yum_repository:
+        name: epel
+        description: EPEL YUM REPOSITORY 
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearc/
+        gpgcheck: no
+        enabled: no
+    - name:
+      yum_repository:
+        name: elasticsearch-6.x
+        description: Elasticsearch repository for 6.x packages
+        baseurl: https://artifacts.elastic.co/packages/6.x/yum
+        gpgcheck: yes
+        gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        enabled: yes

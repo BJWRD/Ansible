@@ -1,0 +1,10 @@
+---
+# Purpose: Enables & starts httpd service and allows the http port on the firewall. The index.html is then deployed while using variables defined in the roles defaults directory.
+# Modules Used: N/A
+
+- name: webconfig_role
+  hosts: all
+  roles:
+    - role: webconfig
+      http_port: "80/tcp"
+      index_path: "/var/www/html/index.html"

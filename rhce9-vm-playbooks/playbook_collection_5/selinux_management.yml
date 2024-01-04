@@ -1,0 +1,36 @@
+---
+# Purpose: SELinux/file management
+# Modules Used: user, file, copy, sefcontext, command
+
+- name: selinux_management
+  hosts: webservers
+  tasks:
+    - name:
+      user:
+        name: webdav
+    - name:
+      file:
+        state: directory
+        path: /exam2 
+        owner: webdav
+        grou: webdav
+        permission: '0775'
+    - name:
+      file:
+        src: /exam2
+        dest: /var/www/html/exam2
+        state: link
+    - name:
+      copy: 
+        content: "All About SELinux"
+        dest: /exam2/about.html
+    - name:
+      sefcontext:
+        target: '/exam2(/.*)?'
+        setype: httpd_sys_content_t
+        state: present
+    - name:
+      command: restorecon -Rv /exam2
+
+#Verification Steps -
+# You should be able to browse ansible4.test.local/exam2/about.html and ansible5.test.local/exam2/about.html and get 'All about SELinux'
