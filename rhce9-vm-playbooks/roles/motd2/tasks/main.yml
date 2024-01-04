@@ -1,0 +1,15 @@
+---
+# tasks file for motd2
+- name: motd2
+  copy:
+    content: Welcome to Dev environment this is {{ inventory_hostname }}
+    dest: /etc/motd
+  when: inventory_hostname in groups['dev']
+- copy:
+    content: Welcome to Qual environment this is {{ inventory_hostname }}
+    dest: /etc/motd
+  when: inventory_hostname in groups['qual']
+- copy:
+    content: Welcome to Prod environment this is {{ inventory_hostname }}
+    dest: /etc/motd
+  when: inventory_hostname in groups['prod']

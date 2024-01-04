@@ -1,0 +1,7 @@
+---
+# handlers file for webconfig
+- name: restart
+  service:
+    name: "{{ httpd_service }}"
+    enabled: yes
+    state: restarted

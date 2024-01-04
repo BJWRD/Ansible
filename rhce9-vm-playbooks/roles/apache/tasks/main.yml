@@ -1,0 +1,36 @@
+---
+# tasks file for roles/apache
+- name:
+  dnf:
+    name: 
+      - httpd
+      - firewalld
+    state: latest
+- name:
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+- name:
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+- name:
+  firewalld:
+    service: http
+    port: 80/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+- name:
+  firewalld:
+    service: https
+    port: 443/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+- name:
+  copy:
+    content: Welcome to Web Server {{ ansible_facts['fqdn']}} on {{ ansible_facts['default_ipv4']['address']}}
+    dest: /var/www/html/index.html

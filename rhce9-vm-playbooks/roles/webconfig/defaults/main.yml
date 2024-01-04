@@ -1,0 +1,5 @@
+---
+# defaults file for webconfig
+httpd_service: httpd
+http_port: 443 TCP 
+index_path: /var/www
