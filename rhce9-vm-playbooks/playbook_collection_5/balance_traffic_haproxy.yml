@@ -1,0 +1,21 @@
+---
+# Pre-Requisite:
+#1) vi roles/requirements.yml
+#   - name: geerlingguy.haproxy
+#2) ansible-galaxy role create -r roles/requirements.yml -p roles
+
+# Purpose: Loadbalance traffic between nodes
+# Modules Used: N/A
+
+- name: balancers
+  hosts: balancers
+  roles:
+  - role: geerlingguy.haproxy
+    haproxy_backend_servers:
+    - name: node4
+      address: 192.168.20.204:80
+    - name: node5
+      address: 192.168.20.205:80
+
+# Verification Steps -
+# curl http://node3.exam1.loc (twice)

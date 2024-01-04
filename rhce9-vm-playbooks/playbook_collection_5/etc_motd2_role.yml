@@ -1,0 +1,8 @@
+---
+# Purpose: Generates an /etc/motd file which should display a welcome message, which will be relevant per host (ensure the motd2 role is used alongside this playbook)
+# Modules Used: N/A
+
+- name:
+  hosts: all
+  roles:
+    - motd2
