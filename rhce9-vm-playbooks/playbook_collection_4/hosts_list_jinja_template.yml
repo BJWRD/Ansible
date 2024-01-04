@@ -1,0 +1,13 @@
+---
+# Purpose: Generates a hosts_list.txt file (to be used with the hosts.j2 file)
+# Modules Used: template
+
+- name: hosts_list_jinja_template
+  hosts:
+    - dev
+    - qual
+  tasks:
+    - name:
+      template:
+        src: hosts.j2
+        dest: /root/hosts_list.txt

@@ -1,0 +1,8 @@
+---
+# Purpose: Acts as a requirements.yml file - 
+# Installation Command: ansible-galaxy role install -r requirements.yml 
+
+roles:
+  - src: https://github.com/bennojoy/nginx
+    version: master
+    name: nginx_role

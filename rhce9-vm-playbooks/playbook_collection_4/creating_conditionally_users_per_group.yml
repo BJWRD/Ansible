@@ -1,0 +1,45 @@
+---
+# Purpose: Creates users which are members of particular groups on dedicated nodes - (The userslist.yml & lock.yml files must be used alongside this playbook for it to execute successfully)
+# Modules Used: group & user
+
+- name: creating_conditionally_users_per_group
+  hosts:
+    - prod 
+    - dev 
+    - qual
+  vars_files:
+    - lock.yml
+    - userslist.yml 
+  tasks:
+    - name:
+      group:
+        name: devops
+        state: present
+      when: 
+        - inventory_hostname in groups['dev'] or inventory_hostname in groups['qual']
+        - item.job == "developer"
+    - name:
+      user: 
+        name: "{{ item.username }}"
+        group: devops
+        append: true
+        password: "{{ 'dev_pass' | password_hash('sha512')}}"
+      when: 
+        - inventory_hostname in groups['dev'] or inventory_hostname in groups['qual']
+      loop: "{{ users }}"
+    - name:
+      group:
+        name: mgrops
+        state: present
+      when: 
+        - inventory_hostname in groups['prod']
+    - name:
+      user: 
+        name: "{{ item.username }}"
+        group: devops
+        append: true
+        password: "{{ 'mgr_pass' | password_hash('sha512')}}"
+      when: 
+        - inventory_hostname in groups['prod']
+        - item.job == "manager"
+      loop: "{{ users }}"

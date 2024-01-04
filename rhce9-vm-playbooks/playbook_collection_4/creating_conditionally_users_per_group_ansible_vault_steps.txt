@@ -1,0 +1,16 @@
+# The Following Steps require execution on a localhost for the creating_conditionally_users_per_group.yml playbook to execute successfully
+
+#1) ansible-vault create lock.yml
+    *Enters password*
+    mgr_pass: snowcity123
+
+#2) ansible-vault edit lock.yml
+    *Enters password*
+    mgr_pass: snowcity123
+    dev_pass: suncity123
+
+#3) ansible-vault decrypt lock.yml
+    *Enters password*
+
+#4) ansible-vault encrypt lock.yml
+    *Enters password*

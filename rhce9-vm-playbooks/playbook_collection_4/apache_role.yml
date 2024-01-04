@@ -1,0 +1,8 @@
+---
+# Purpose: Installs httpd/firewalld packages, opens up 80/443 ports and deploys a specific index.html file - (Welcome to Web Server <host_fqdn> on <ipv4_address>) - (ensure the apache role is used alongside this playbook)
+# Modules Used: N/A
+
+- name: apache_role
+  hosts: webservers
+  roles:
+    - apache

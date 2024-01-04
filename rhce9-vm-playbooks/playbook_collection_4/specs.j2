@@ -1,0 +1,14 @@
+HOSTNAME="{{ ansible_facts['hostname'] }}"
+HOST_FQDN="{{ ansible_facts['fqdn'] }}"
+OS="{{ ansible_facts['distribution'] }}"
+BIOS_VERSION="{{ ansible_facts['bios_version'] }}"
+TOTAL_MEMORY IN MB="{{ ansible_facts['memtotal_mb'] }}"
+VDA_DISK_SIZE="{{ ansible_facts['devices']['sda']['size'] }}"
+{% else %}
+VDA_Size = NONE 
+{% endif %}
+{% if 'sdb' in ansible_facts['devices'] %}
+VDB_DISK_SIZE="{{ ansible_facts['devices']['sdb']['size'] }}"
+{% else %}
+VDB_Size = NONE
+{% endif %}

@@ -1,0 +1,8 @@
+{% if inventory_hostname in groups['dev'] %}
+Development Node
+{% elif inventory_hostname in groups['qual'] %}
+Qual Node
+{% elif inventory_hostname in groups['balancers']}
+Prod Node
+{% else %}
+{% endif %}

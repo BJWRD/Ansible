@@ -1,0 +1,14 @@
+---
+# Purpose: Idempotently sets graphical.target on target hosts
+# Modules Used: command
+
+- name: idempotent_default_target
+  hosts: all
+  tasks:
+    - name:
+      command: systemctl get-default
+      changed_when: false
+      register: default 
+    - name:
+      command: systemctl set-default graphical.target
+      when: "'graphical.target' not in default['stdout']"

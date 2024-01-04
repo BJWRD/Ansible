@@ -1,0 +1,11 @@
+# The creating_conditionally_users_per_group.yml playbook must be used alongside this file for a successful playbook execution
+---
+users:
+  - username: mark
+    job: devops
+  - username: dan
+    job: manager
+  - username: bill
+    job: developer
+  - username: lisa 
+    job: tester

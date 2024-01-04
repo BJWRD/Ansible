@@ -1,0 +1,21 @@
+---
+# Purpose: Package installation
+# Modules Used: dnf
+
+- name: package_installation
+  hosts:
+    - dev 
+    - qual
+    - webservers
+  tasks:
+    - name:
+      dnf:
+        name:
+          - php
+          - mariadb
+        state: latest
+    - name:
+      dnf:
+        name: "@DevelopmentTools"
+        state: latest 
+      when: inventory_hostname in groups['webservers']

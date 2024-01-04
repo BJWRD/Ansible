@@ -1,0 +1,47 @@
+---
+# Purpose: Creates storage on localhost as long as there is sufficient space available
+# Modules Used: parted, lvg, lvol, debug, filesystem, mount
+- name: managing_local_storage_conditionally
+  hosts: all
+  tasks:
+    - name:
+      parted:
+        number: 1
+        state: present
+        device: /dev/sdb
+    - name:
+      lvg:
+        vg: vms
+        pvs: /dev/sdb
+    - name:
+      lvol:
+        vg: vms
+        lv: lvs2 
+        size: 1g
+      when: "'vms" in ansible_facts['lvm']['vgs'] and ansible_facts['lvm']['vgs']['vms']['free_g'] > '1.00'"
+    - name:
+      debug:
+        msg: "No sufficient disk space available"
+      when: "'vms" in ansible_facts['lvm']['vgs'] and ansible_facts['lvm']['vgs']['vms']['free_g'] <= '1.00'"
+    - name: 
+      lvol:
+        vg: vms
+        lv: lvs2
+        size: 750m
+      when: "'vms" in ansible_facts['lvm']['vgs'] and ansible_facts['lvm']['vgs']['vms']['free_g'] <= '1.00'"
+    - name:
+      debug: 
+        msg: "No volume group exist"
+      when: "'vms' not in ansible_facts['lvm']['vgs']"
+    - name:
+      filesystem:
+        fstype: xfs
+        dev: /dev/vms/lvs2
+      when: "'vms' in ansible_facts['lvm']['vgs']"
+    - name:
+      mount:
+        path: /data 
+        fstype: xfs
+        state: mounted
+        src: /dev/vms/lvs2
+      when: "'vms' in ansible_facts['lvm']['vgs']"

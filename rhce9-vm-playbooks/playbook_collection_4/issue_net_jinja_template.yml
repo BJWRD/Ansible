@@ -1,0 +1,11 @@
+---
+# Purpose: Generates a issue.net file (to be used with the issue.net.j2 file)
+# Modules Used: template
+
+- name: issue_net_jinja_template
+  hosts: all 
+  tasks:
+    - name:
+      template:
+        src: issue.net.j2
+        dest: /etc/issue.net

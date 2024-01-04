@@ -1,0 +1,29 @@
+---
+# Purpose: Generates a list of all managed nodes FQDN's within the nodes.txt file
+# Modules Used: file, group, template, sefcontext
+
+- name: hosts_fqdn_jinja_template
+  hosts: balancers 
+  tasks:
+    - name:
+      file: 
+        state: directory
+        path: /dav
+        mode: 2775
+    - name:
+      group:
+        name: devops
+    - name:
+      template:
+        src: hosts_fqdn.j2
+        dest: /dav/nodes.txt
+        group: devops
+    - name:
+      sefcontext:
+        target: '/dav/nodes.txt'
+        setype: samba_share_t
+        ftype: 'f' 
+        state: present
+
+#Verification Step -
+#ansible balancers -m command -a "ls -Z -u /devops"

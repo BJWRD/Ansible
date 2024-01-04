@@ -1,0 +1,21 @@
+---
+# Purpose: Creating rsyslog cronjobs
+# Modules Used: cron
+
+- name: cronjob_per_inventory_group
+  hosts:
+    - dev
+    - qual
+    - prod
+  tasks:
+    - name:
+      cron:
+        name: rsyslog
+        hour: 15
+        job: systemctl restart rsyslog
+      when: inventory_hostname in groups['dev'] and inventory_hostname in groups ['qual']
+    - name:
+      cron:
+        name: rsyslog_2
+        hour: 23
+        job: systemctl restart rsyslog
