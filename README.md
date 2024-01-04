@@ -13,8 +13,8 @@ To explore the Ansible deployments in this repository, follow these steps:
   
 #### 3. Choose one of the available deployments from the list below and follow the instructions provided in their respective directories:
 
-* [ansible-python-flask-deployment](https://github.com/BJWRD/Ansible/ansible-python-flask-deployment): `Python Flask Application, running on an AWS EC2 instance within a Docker Container - provisioned using Ansible.`
-* [rhce9-vm-playbooks](https://github.com/BJWRD/Ansible/rhce9-vm-playbooks): `A collection of Ansible playbooks which I found to be useful when working towards my RHCE (RedHat Certified Engineer) certification.`
+* [ansible-python-flask-deployment](https://github.com/BJWRD/Ansible): `Python Flask Application, running on an AWS EC2 instance within a Docker Container - provisioned using Ansible.`
+* [rhce9-vm-playbooks](https://github.com/BJWRD/Ansible): `A collection of Ansible playbooks which I found to be useful when working towards my RHCE (RedHat Certified Engineer) certification.`
 
 Feel free to explore each example's directory for detailed instructions on how to use Ansible. Each example comes with its own README file that provides step-by-step guidance.
 
