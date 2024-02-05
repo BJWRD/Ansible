@@ -1,0 +1,14 @@
+---
+# Pre-Reqs: 'dnf install rhel-system-roles -y'
+# Purpose: installs timesync role
+# Roles Used: rhel-system-roles (timesync)
+
+- name: Example with single pool
+  hosts: all
+  vars:
+    timesync_ntp_servers:
+      - hostname: pool.ntp.org
+        pool: true
+        iburst: true
+  roles:
+    - rhel-system-roles.timesync
